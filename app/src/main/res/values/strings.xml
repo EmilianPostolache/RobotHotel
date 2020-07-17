@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Robot Hotel</string>
+    <string name="welcome">Welcome at the Robot Hotel!</string>
+    <string name="welcome_short">Welcome</string>
+    <string name="enter_name">Please enter your name and surname:</string>
+    <string name="select_action">Select an action</string>
+    <string name="checkin">Check In</string>
+    <string name="info">Information</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="ok">OK</string>
 </resources>

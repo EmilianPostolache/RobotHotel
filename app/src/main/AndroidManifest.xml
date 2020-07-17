@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="edu.sapienza.robothotel">
 
+    <uses-feature android:name="com.softbank.hardware.pepper" />
+
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme"
+        android:name=".RobotHotelApplication"
+        tools:ignore="AllowBackup">
+        <activity android:name=".ui.info.InfoActivity"
+            android:label="@string/info"/>
+        <activity android:name=".ui.checkin.CheckinActivity"
+            android:label="@string/checkin"/>
+        <activity android:name=".ui.idle.IdleActivity"/>
+        <activity
+            android:name=".ui.action.ActionActivity"
+            android:label="@string/select_action" />
+        <activity
+            android:name=".ui.welcome.WelcomeActivity"
+            android:label="@string/welcome_short">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
 
-    <uses-feature android:name="com.softbank.hardware.pepper"/>
 </manifest>
