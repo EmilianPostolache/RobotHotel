@@ -6,9 +6,14 @@ import androidx.room.PrimaryKey
 
 @Entity(indices = [Index("name", unique = true)])
 data class Room(
-    @PrimaryKey val id: Long,
-    val name: String
-)
+    val name: String,
+    val type: RoomType
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+}
 
-
+enum class RoomType {
+    SINGLE, DOUBLE, DELUXE
+}
 

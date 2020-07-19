@@ -5,6 +5,8 @@
     <string name="enter_name">Please enter your name and surname:</string>
     <string name="select_action">Select an action</string>
     <string name="checkin">Check In</string>
+    <string name="checkout">Check Out</string>
+    <string name="book">Book</string>
     <string name="info">Information</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
