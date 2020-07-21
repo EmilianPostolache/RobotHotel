@@ -37,7 +37,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideReviewDao(db: AppDatabase): RoomDao {
+    fun provideRoomDao(db: AppDatabase): RoomDao {
         return db.roomDao()
     }
 }
