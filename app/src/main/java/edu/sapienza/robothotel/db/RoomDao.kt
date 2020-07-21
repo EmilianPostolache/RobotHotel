@@ -3,6 +3,7 @@ package edu.sapienza.robothotel.db
 import androidx.paging.DataSource
 import androidx.room.*
 import edu.sapienza.robothotel.vo.Room
+import java.time.LocalDate
 
 @Dao
 interface RoomDao {
@@ -16,5 +17,6 @@ interface RoomDao {
 
     @Query("SELECT * FROM room ORDER BY id DESC LIMIT 1")
     suspend fun findRoom(): Room?
+
 }
 

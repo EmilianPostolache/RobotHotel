@@ -18,8 +18,8 @@ import edu.sapienza.robothotel.vo.Room
 import edu.sapienza.robothotel.vo.RoomType
 
 
-class CheckinAdapter(private val myRoom: Long): PagedListAdapter<Room,
-        CheckinAdapter.RoomViewHolder>(DIFF_CALLBACK) {
+class MapAdapter(private val myRoom: Long?): PagedListAdapter<Room,
+        MapAdapter.RoomViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
@@ -35,7 +35,7 @@ class CheckinAdapter(private val myRoom: Long): PagedListAdapter<Room,
         private val name: TextView = itemView.findViewById(R.id.room_name)!!
         private val type: TextView = itemView.findViewById(R.id.room_type)!!
 
-        fun bind(room: Room?, myRoom: Long) {
+        fun bind(room: Room?, myRoom: Long?) {
             name.text = room!!.name
             type.text = when(room.type) {
                 RoomType.SINGLE -> "S"
@@ -44,7 +44,8 @@ class CheckinAdapter(private val myRoom: Long): PagedListAdapter<Room,
             }
 
             if (room.id == myRoom) {
-                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorRed))
+                itemView.setBackgroundColor(
+                    ContextCompat.getColor(itemView.context, R.color.colorRed))
             }
         }
     }

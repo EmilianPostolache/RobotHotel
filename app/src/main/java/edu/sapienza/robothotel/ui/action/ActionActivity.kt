@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
@@ -24,6 +25,9 @@ import edu.sapienza.robothotel.ui.checkin.CheckinActivity
 import edu.sapienza.robothotel.ui.idle.IdleActivity
 import edu.sapienza.robothotel.ui.map.MapActivity
 import edu.sapienza.robothotel.viewmodel.ViewModelProviderFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
@@ -82,7 +86,7 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
                }
            }
         })
-        viewModel.createDb()
+
 
         viewModel.getPepperState().observe(this, Observer{
             if (it == PepperState.IDLE) {
@@ -105,14 +109,9 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
     }
 
     override fun onRobotFocusGained(qiContext: QiContext) {
-        if (viewModel.bookingState.value == null) {
-            viewModel.bookingState.observe(this, Observer {
-                robotAct(it, qiContext)
-            })
+        while (viewModel.bookingState.value == null) {
         }
-        else {
-            robotAct(viewModel.bookingState.value!!, qiContext)
-        }
+        robotAct(viewModel.bookingState.value!!, qiContext)
     }
 
     private fun robotAct(bookingState: BookingState, qiContext: QiContext) {
@@ -176,6 +175,7 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
     fun onCheckinClicked(view: View?) {
         val intent = Intent(this, CheckinActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     fun onCheckoutClicked(view: View?) {
@@ -189,5 +189,6 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
     fun onMapClicked(view: View?) {
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

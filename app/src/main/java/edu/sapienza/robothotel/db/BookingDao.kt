@@ -5,7 +5,6 @@ import androidx.room.*
 import edu.sapienza.robothotel.vo.Booking
 import edu.sapienza.robothotel.vo.BookingWithRoom
 import org.threeten.bp.LocalDate
-import java.util.*
 
 @Dao
 interface BookingDao {
@@ -28,4 +27,10 @@ interface BookingDao {
 
     @Query("SELECT * FROM booking WHERE userId = :userId AND checkinDate = :date")
     fun findBookingWithRoomForDate(userId: Long, date: LocalDate?) :  LiveData<List<BookingWithRoom>>
+
+    @Query("SELECT * FROM booking WHERE userId = :userId AND checkinDate <= :date AND :date <= checkoutDate AND checkedIn = 1 AND checkedOut = 0")
+    fun findActiveBookingWithRoom(userId: Long, date: LocalDate?) :  LiveData<List<BookingWithRoom>>
+
+    @Query("SELECT * FROM booking WHERE checkinDate <= :date AND :date <= checkoutDate AND checkedIn = 1 AND checkedOut = 0")
+    fun findActiveBookings(date: LocalDate?): LiveData<List<BookingWithRoom>>
 }

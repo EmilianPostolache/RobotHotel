@@ -13,6 +13,18 @@
     <string name="ok">OK</string>
     <string name="simulate">Simulate human arrival</string>
 
+    <string name="days">Number of days</string>
+    <string name="days_hint">3</string>
+
+
+    <string name="single_room">Single</string>
+    <string name="double_room">Double</string>
+    <string name="deluxe_room">Deluxe</string>
+
+    <string name="single_room_price">5€</string>
+    <string name="double_room_price">10€</string>
+    <string name="deluxe_room_price">50€</string>
+
     <string name="pepper_disengage">See you soon!</string>
     <string name="pepper_welcome">Hello, I am Pepper the Receptionist!</string>
     <string name="pepper_entername"> Please enter
@@ -29,7 +41,7 @@
     me other questions.</string>
     <string name="pepper_checkin_1">You have a booking for room %1$s, that is a %2$s room.</string>
     <string name="pepper_checkin_2">To reach your room, take the corridor on the %1$s. Then your room
-    is the %2$s along the corridor on the %3$s. I will show you this map again when you like.
+    is the %2$s along the corridor on the %3$s side. I can show you this map again if you like.
     </string>
     <string name="pepper_checkin_3">
             Let me give you the key now!.
@@ -57,7 +69,16 @@
         right now. Anything else I can do for you?
     </string>
 
-    <string name="pepper_map_1">This is the map of the hotel, we have  rooms separated
+    <string name="pepper_map_1">This is the map of the hotel.</string>
+    <string name="pepper_map_2">To reach your room, take the corridor on the %1$s. Then your room
+    is the %2$s along the corridor on the %3$s side.
     </string>
+
+    <string name="pepper_stats">We have %1$s rooms: %2$s are single,
+        %3$s are double and %4$s are deluxe. %5$s out of %1$s rooms are taken right now.</string>
+
+    <string name="pepper_map_confirm">When you have finished to view the map, say OK!</string>
+
+
 
 </resources>

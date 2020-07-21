@@ -1,0 +1,6 @@
+topic: ~map()
+# Defining extra concepts out of words or group of words
+concept:(ok) [ok "all right" yes back]
+
+# Replying to speech
+u:(~ok) ^execute(okExecutor)

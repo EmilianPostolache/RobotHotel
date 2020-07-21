@@ -29,6 +29,8 @@
         <activity
             android:name=".ui.welcome.WelcomeActivity"
             android:label="@string/welcome_short"/>
+        <activity android:name=".ui.book.BookActivity"
+            android:label="@string/book"/>
     </application>
 
 </manifest>

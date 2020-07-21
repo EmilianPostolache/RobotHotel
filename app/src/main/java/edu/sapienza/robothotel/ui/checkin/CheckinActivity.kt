@@ -134,11 +134,9 @@ class CheckinActivity : RobotActivity(), RobotLifecycleCallbacks {
     }
 
     override fun onRobotFocusLost() {
-        TODO("Not yet implemented")
     }
 
     override fun onRobotFocusRefused(reason: String?) {
-        TODO("Not yet implemented")
     }
 
     private fun action() {

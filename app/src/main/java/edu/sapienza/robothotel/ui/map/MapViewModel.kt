@@ -29,23 +29,22 @@ class MapViewModel @Inject constructor(private var userManager: UserManager,
     private val roomsList: LiveData<PagedList<Room>> =
         roomDao.findRooms().toLiveData(pageSize = 50)
 
-    private var userBookingWithRoom: LiveData<List<BookingWithRoom>> =
-        bookingDao.findBookingWithRoomForDate(userManager.authenticatedUser!!.id, LocalDate.now())
+    private val activeBookingsList: LiveData<List<BookingWithRoom>> =
+        bookingDao.findActiveBookings(LocalDate.now())
+
+    private var userActiveBookingWithRoom: LiveData<List<BookingWithRoom>> =
+        bookingDao.findActiveBookingWithRoom(userManager.authenticatedUser!!.id, LocalDate.now())
 
     fun getRoomsList(): LiveData<PagedList<Room>> {
         return roomsList
     }
 
-    fun getUserBookingWithRoom(): LiveData<List<BookingWithRoom>> {
-        return userBookingWithRoom
+    fun getUserActiveBookingWithRoom(): LiveData<List<BookingWithRoom>> {
+        return userActiveBookingWithRoom
     }
 
-    fun checkin() {
-        viewModelScope.launch{
-            val userBooking = userBookingWithRoom.value!![0].booking
-            userBooking.checkedIn = true
-            bookingDao.updateBooking(userBooking)
-        }
+    fun getActiveBookingsList(): LiveData<List<BookingWithRoom>> {
+        return activeBookingsList
     }
 
     fun deauthenticate() {

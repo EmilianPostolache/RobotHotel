@@ -7,20 +7,7 @@
     tools:context=".ui.action.ActionActivity">
     <!-- app:cardBackgroundColor="@color/colorPrimaryDark" -->
 
-    <!--
-     <TextView
-        android:id="@+id/title2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="@string/select_action"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-        app:layout_constraintBottom_toTopOf="@+id/enter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/select_action" /> -->
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card1"
@@ -29,33 +16,45 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
+        android:onClick="onCheckinClicked"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView1"
+        app:layout_constraintBottom_toBottomOf="@+id/card2"
         app:layout_constraintEnd_toStartOf="@+id/card2"
         app:layout_constraintHorizontal_bias="0.5"
-        android:onClick="onCheckinClicked"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/card2">
 
         <ImageView
             android:id="@+id/image1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_checkin_gray" />
+            app:srcCompat="@drawable/ic_room_single_gray" />
 
     </androidx.cardview.widget.CardView>
 
+
+
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checkin"
+        android:text="@string/single_room"
+        android:layout_marginBottom="12dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/card3"
+        app:layout_constraintBottom_toTopOf="@+id/card1"
+        app:layout_constraintEnd_toEndOf="@+id/card1"
+        app:layout_constraintStart_toStartOf="@+id/card1" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/single_room_price"
+        android:layout_marginTop="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="@+id/card1"
         app:layout_constraintStart_toStartOf="@+id/card1"
-        app:layout_constraintTop_toBottomOf="@+id/card1"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/card1" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card2"
@@ -63,11 +62,11 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="onCheckoutClicked"
         android:foreground="?android:selectableItemBackground"
+        android:onClick="onCheckoutClicked"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/editDaysNumber"
+        app:layout_constraintEnd_toStartOf="@+id/card3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/card1"
         app:layout_constraintTop_toTopOf="parent">
@@ -76,22 +75,32 @@
             android:id="@+id/image2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_checkout_gray" />
+            app:srcCompat="@drawable/ic_room_double_gray" />
 
     </androidx.cardview.widget.CardView>
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checkout"
+        android:text="@string/double_room"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/card4"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/card2"
+        app:layout_constraintEnd_toEndOf="@+id/card2"
+        app:layout_constraintStart_toStartOf="@+id/card2" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/double_room_price"
+        android:layout_marginTop="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="@+id/card2"
         app:layout_constraintStart_toStartOf="@+id/card2"
-        app:layout_constraintTop_toBottomOf="@+id/card2"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/card2" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card3"
@@ -100,66 +109,67 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
+        android:onClick="onCheckoutClicked"
         app:cardCornerRadius="20dp"
-        android:onClick="onBookClicked"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toStartOf="@+id/card4"
+        app:layout_constraintBottom_toBottomOf="@+id/card2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1">
+        app:layout_constraintStart_toEndOf="@+id/card2"
+        app:layout_constraintTop_toTopOf="@+id/card2">
 
         <ImageView
             android:id="@+id/image3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_book_gray" />
+            app:srcCompat="@drawable/ic_room_deluxe_gray" />
+
     </androidx.cardview.widget.CardView>
 
+
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/book"
+        android:text="@string/deluxe_room"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/card3"
+        app:layout_constraintEnd_toEndOf="@+id/card3"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="@+id/card3" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deluxe_room_price"
+        android:layout_marginTop="12dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="@+id/card3"
         app:layout_constraintStart_toStartOf="@+id/card3"
-        app:layout_constraintTop_toBottomOf="@+id/card3"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/card3" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="onMapClicked"
-        android:foreground="?android:selectableItemBackground"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/card3"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <ImageView
-            android:id="@+id/image4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_map" />
-    </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/map"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="@string/days"
+        app:layout_constraintBottom_toTopOf="@+id/editDaysNumber"
+        app:layout_constraintEnd_toEndOf="@+id/editDaysNumber"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="@+id/editDaysNumber" />
+
+    <EditText
+        android:id="@+id/editDaysNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/days_hint"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/card4"
-        app:layout_constraintStart_toStartOf="@+id/card4"
-        app:layout_constraintTop_toBottomOf="@+id/card4"
-         />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
