@@ -11,7 +11,7 @@ data class Booking(
     val checkinDate: LocalDate?,
     val checkoutDate: LocalDate?,
     var checkedIn: Boolean,
-    val checkedOut: Boolean
+    var checkedOut: Boolean
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

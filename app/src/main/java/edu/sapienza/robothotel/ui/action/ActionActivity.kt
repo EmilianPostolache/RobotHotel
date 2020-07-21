@@ -12,19 +12,20 @@ import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
 import com.aldebaran.qi.sdk.`object`.conversation.*
-import com.aldebaran.qi.sdk.builder.ChatBuilder
-import com.aldebaran.qi.sdk.builder.QiChatbotBuilder
-import com.aldebaran.qi.sdk.builder.SayBuilder
-import com.aldebaran.qi.sdk.builder.TopicBuilder
+import com.aldebaran.qi.sdk.builder.*
 import com.aldebaran.qi.sdk.design.activity.RobotActivity
 import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy
+import com.aldebaran.qi.sdk.util.PhraseSetUtil
 import edu.sapienza.robothotel.R
 import edu.sapienza.robothotel.RobotHotelApplication
 import edu.sapienza.robothotel.pepper.PepperState
+import edu.sapienza.robothotel.ui.book.BookActivity
 import edu.sapienza.robothotel.ui.checkin.CheckinActivity
+import edu.sapienza.robothotel.ui.checkout.CheckoutActivity
 import edu.sapienza.robothotel.ui.idle.IdleActivity
 import edu.sapienza.robothotel.ui.map.MapActivity
 import edu.sapienza.robothotel.viewmodel.ViewModelProviderFactory
+import kotlinx.android.synthetic.main.activity_book.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -123,7 +124,7 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
             .withResource(R.raw.actions)
             .build()
 
-        // Create a qiChatbot
+        /*// Create a qiChatbot
         val qiChatbot: QiChatbot = QiChatbotBuilder.with(qiContext).withTopic(topic).build()
 
         val executors = HashMap<String, QiChatExecutor>()
@@ -141,8 +142,69 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
         val chat: Chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build()
 
         // Run an action asynchronously.
-        chat.async().run()
+        chat.async().run()*/
+
+        robotListen(qiContext)
     }
+
+    private fun robotListen(qiContext: QiContext){
+
+        val phraseSetCheckin: PhraseSet = PhraseSetBuilder.with(qiContext)
+            .withTexts("checkin", "check in")
+            .build()
+
+        val phraseSetCheckout: PhraseSet = PhraseSetBuilder.with(qiContext)
+            .withTexts("checkout", "check out")
+            .build()
+
+        val phraseSetMap: PhraseSet = PhraseSetBuilder.with(qiContext)
+            .withTexts("map", "hotel map")
+            .build()
+
+        val phraseSetBook: PhraseSet = PhraseSetBuilder.with(qiContext)
+            .withTexts("booking", "book", "to book")
+            .build()
+
+        val listen: Listen = ListenBuilder.with(qiContext)
+            .withPhraseSets(phraseSetCheckin, phraseSetCheckout,
+                phraseSetMap, phraseSetBook)
+            .build()
+
+        val listenResult: ListenResult = listen.run()
+        val matchedPhraseSet: PhraseSet = listenResult.matchedPhraseSet
+        if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetCheckin)) {
+            if (viewModel.bookingState.value!! == BookingState.CHECKIN) {
+                onCheckinClicked(null)
+            } else {
+                SayBuilder.with(qiContext).withText(
+                getString(R.string.pepper_checkin_fail)).build().run()
+            }
+        }
+        if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetCheckout)) {
+            if (viewModel.bookingState.value!! == BookingState.CHECKOUT) {
+                onCheckoutClicked(null)
+            } else {
+                SayBuilder.with(qiContext).withText(
+                getString(R.string.pepper_checkout_fail)).build().run()
+            }
+        }
+
+        if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetBook)) {
+            if (viewModel.bookingState.value!! == BookingState.BOOK) {
+                onBookClicked(null)
+            } else {
+                SayBuilder.with(qiContext).withText(
+                getString(R.string.pepper_book_fail)).build().run()
+            }
+        }
+
+        if(PhraseSetUtil.equals(matchedPhraseSet, phraseSetMap)) {
+            onMapClicked(null)
+        }
+
+        robotListen(qiContext)
+    }
+
 
     private fun sayActions(state: BookingState, qiContext: QiContext) {
         when (state) {
@@ -179,11 +241,15 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
     }
 
     fun onCheckoutClicked(view: View?) {
-        // TODO: need to be added
+        val intent = Intent(this, CheckoutActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     fun onBookClicked(view: View?) {
-        // TODO: need to be added
+        val intent = Intent(this, BookActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     fun onMapClicked(view: View?) {

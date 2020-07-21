@@ -79,6 +79,37 @@
 
     <string name="pepper_map_confirm">When you have finished to view the map, say OK!</string>
 
+    <string name="pepper_book_description">I have searched for free rooms in our hotel. The
+        type of rooms listed in blue are available. Please tell me the one you prefer
+        and the number of nights do you want to stay. When you have chosen, please confirm, otherwise
+        i can cancel the booking.
+    </string>
 
+    <string name="pepper_book_aggreement1">Perfect!
+    </string>
+
+    <string name="pepper_book_aggreement2">All right!
+    </string>
+
+    <string name="pepper_book_aggreement3">Excellent!
+    </string>
+
+    <string name="pepper_book_unavailable">That type of room is unavailable, unfortunately. Please, choose
+        among the others!
+    </string>
+
+    <string name="pepper_book_number_not_understand">I cannot understand that number! Can you repeat?
+    </string>
+
+    <string name="pepper_book_incomplete">You haven\'t specified all the required informations!
+        Please tell them to me!
+    </string>
+
+    <string name="thankyou">Thank you!
+    </string>
+
+    <string name="pepper_checkout1">Thanks for choosing our hotel! I take the key please. The
+        payment procedure is automatic!
+    </string>
 
 </resources>

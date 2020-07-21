@@ -102,8 +102,8 @@ class MapActivity : RobotActivity(), RobotLifecycleCallbacks {
         }
 
         val leftright = when(room.id) {
-            2L, 5L, 8L -> "right"
-            else -> "left"
+            3L, 6L, 7L -> "left"
+            else -> "right"
         }
         val row = when(room.id) {
             in 1..3 -> "first"
@@ -157,7 +157,6 @@ class MapActivity : RobotActivity(), RobotLifecycleCallbacks {
 
         // Create a qiChatbot
         val qiChatbot: QiChatbot = QiChatbotBuilder.with(qiContext).withTopic(topic).build()
-
         val executors = HashMap<String, QiChatExecutor>()
 
         // Map the executor name from the topic to our qiChatbotExecutor
@@ -168,9 +167,9 @@ class MapActivity : RobotActivity(), RobotLifecycleCallbacks {
 
         // Build chat with the chatbotBuilder
         val chat: Chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build()
-
         // Run an action asynchronously.
         chat.async().run()
+
     }
 
 

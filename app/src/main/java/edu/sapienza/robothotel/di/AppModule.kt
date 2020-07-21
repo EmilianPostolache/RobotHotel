@@ -22,7 +22,6 @@ class AppModule {
             .build()
     }
 
-
     @Singleton
     @Provides
     fun provideBookingDao(db: AppDatabase): BookingDao {

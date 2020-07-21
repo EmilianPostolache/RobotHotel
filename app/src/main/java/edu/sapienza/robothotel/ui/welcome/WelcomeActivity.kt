@@ -13,13 +13,11 @@ import com.aldebaran.qi.Future
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
+import com.aldebaran.qi.sdk.`object`.actuation.Animation
 import com.aldebaran.qi.sdk.`object`.conversation.Chat
 import com.aldebaran.qi.sdk.`object`.conversation.QiChatbot
 import com.aldebaran.qi.sdk.`object`.conversation.Topic
-import com.aldebaran.qi.sdk.builder.ChatBuilder
-import com.aldebaran.qi.sdk.builder.QiChatbotBuilder
-import com.aldebaran.qi.sdk.builder.SayBuilder
-import com.aldebaran.qi.sdk.builder.TopicBuilder
+import com.aldebaran.qi.sdk.builder.*
 import com.aldebaran.qi.sdk.design.activity.RobotActivity
 import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy
 import edu.sapienza.robothotel.R
@@ -82,10 +80,24 @@ class WelcomeActivity : RobotActivity(), RobotLifecycleCallbacks {
 
         val say1 = SayBuilder.with(qiContext).
         withText(resources.getString(R.string.pepper_welcome)).build()
-        say1.run()
-        val say2 = SayBuilder.with(qiContext).
-        withText(resources.getString(R.string.pepper_entername)).build()
-        say2.run()
+        say1.async().run()
+
+        val animation: Animation = AnimationBuilder.with(qiContext) // Create the builder with the context.
+            .withResources(R.raw.hello_a001) // Set the animation resource.
+            .build() // Build the animation.
+
+        val animate = AnimateBuilder.with(qiContext) // Create the builder with the context.
+            .withAnimation(animation) // Set the animation.
+            .build() // Build the animate action
+
+        val animateFuture: Future<Void>? = animate?.async()?.run()
+
+        animateFuture!!.andThenConsume{
+            val say2 = SayBuilder.with(qiContext).
+            withText(resources.getString(R.string.pepper_entername)).build()
+            say2.run()
+        }
+
     }
 
     override fun onRobotFocusLost() {

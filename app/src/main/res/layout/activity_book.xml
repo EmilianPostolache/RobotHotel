@@ -7,16 +7,15 @@
     tools:context=".ui.action.ActionActivity">
     <!-- app:cardBackgroundColor="@color/colorPrimaryDark" -->
 
-
+<!--        android:foreground="?android:selectableItemBackground" -->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        android:onClick="onCheckinClicked"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/card2"
         app:layout_constraintEnd_toStartOf="@+id/card2"
@@ -60,10 +59,9 @@
         android:id="@+id/card2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        android:onClick="onCheckoutClicked"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toTopOf="@+id/editDaysNumber"
         app:layout_constraintEnd_toStartOf="@+id/card3"
@@ -106,10 +104,9 @@
         android:id="@+id/card3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        android:onClick="onCheckoutClicked"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/card2"
         app:layout_constraintEnd_toEndOf="parent"

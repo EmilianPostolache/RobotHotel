@@ -18,7 +18,7 @@ interface BookingDao {
     suspend fun updateBooking(vararg booking: Booking?)
 
     // ------------------ Query -------------------
-    @Query("SELECT * FROM booking WHERE userId = :userId AND (checkinDate = :date OR" +
+    @Query("SELECT * FROM booking WHERE userId = :userId AND ((checkinDate = :date AND checkedIn = 0) OR" +
             "(checkedIn = 1 AND checkedOut = 0))")
     fun findBookingForDateOrActive(userId: Long, date: LocalDate?): LiveData<List<Booking>>
 
@@ -33,4 +33,5 @@ interface BookingDao {
 
     @Query("SELECT * FROM booking WHERE checkinDate <= :date AND :date <= checkoutDate AND checkedIn = 1 AND checkedOut = 0")
     fun findActiveBookings(date: LocalDate?): LiveData<List<BookingWithRoom>>
+
 }

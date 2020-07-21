@@ -1,6 +1,16 @@
 topic: ~book()
 # Defining extra concepts out of words or group of words
-#concept:(hello) [hello hi hey "good morning" greetings]
+concept:(deluxe) [deluxe "deluxe room"]
+concept:(single) [single "single room"]
+concept:(double) [double "double room"]
+concept:(day) [days day]
+concept:(ok) [proceede approve ok accept confirm]
+concept:(no) [return back cancel "cancel the booking"]
 
 # Replying to speech
-#u:(~hello) ~hello
+u:(~deluxe) ^execute(deluxeExecutor)
+u:(~single) ^execute(singleExecutor)
+u:(~double) ^execute(doubleExecutor)
+u:(~day) ^execute(daysExecutor)
+u:(~ok) ^execute(okExecutor)
+u:(~no) ^execute(noExecutor)

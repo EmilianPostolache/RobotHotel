@@ -4,6 +4,7 @@ import dagger.Subcomponent
 import edu.sapienza.robothotel.ui.action.ActionActivity
 import edu.sapienza.robothotel.ui.book.BookActivity
 import edu.sapienza.robothotel.ui.checkin.CheckinActivity
+import edu.sapienza.robothotel.ui.checkout.CheckoutActivity
 import edu.sapienza.robothotel.ui.map.MapActivity
 
 @UserScope
@@ -19,4 +20,6 @@ interface UserComponent {
     fun inject(activity: CheckinActivity)
     fun inject(activity: MapActivity)
     fun inject(activity: BookActivity)
+    fun inject(activity: CheckoutActivity)
+
 }

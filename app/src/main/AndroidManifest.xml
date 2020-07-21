@@ -17,6 +17,8 @@
             android:label="@string/map"/>
         <activity android:name=".ui.checkin.CheckinActivity"
             android:label="@string/checkin"/>
+        <activity android:name=".ui.checkout.CheckoutActivity"
+            android:label="@string/checkout"/>
         <activity android:name=".ui.idle.IdleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
