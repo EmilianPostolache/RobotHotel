@@ -1,8 +1,6 @@
 package edu.sapienza.robothotel.vo
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 import org.threeten.bp.LocalDate
 import java.util.*
 
@@ -18,3 +16,15 @@ data class Booking(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
+
+data class BookingWithRoom (
+    @Embedded val booking: Booking,
+
+    @Relation(
+        parentColumn = "roomId",
+        entityColumn = "id",
+        entity = Room::class
+    )
+    val room: Room
+)
+

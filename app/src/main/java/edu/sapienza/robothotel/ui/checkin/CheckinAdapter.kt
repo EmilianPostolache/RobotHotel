@@ -1,20 +1,24 @@
 package edu.sapienza.robothotel.ui.checkin
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import edu.sapienza.robothotel.R
+import edu.sapienza.robothotel.RobotHotelApplication
+import edu.sapienza.robothotel.utils.LogHelp
 import edu.sapienza.robothotel.vo.Room
 import edu.sapienza.robothotel.vo.RoomType
 
 
-class CheckinAdapter(private val onClickListener: (View, Room)
-        -> Unit): PagedListAdapter<Room,
+class CheckinAdapter(private val myRoom: Long): PagedListAdapter<Room,
         CheckinAdapter.RoomViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder {
@@ -24,15 +28,14 @@ class CheckinAdapter(private val onClickListener: (View, Room)
 
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
         val room = getItem(position)
-        holder.bind(room, onClickListener)
+        holder.bind(room, myRoom)
     }
 
     class RoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val name: TextView = itemView.findViewById(R.id.room_name)!!
         private val type: TextView = itemView.findViewById(R.id.room_type)!!
 
-        fun bind(room: Room?, onClickListener:
-            (View, Room) -> Unit) {
+        fun bind(room: Room?, myRoom: Long) {
             name.text = room!!.name
             type.text = when(room.type) {
                 RoomType.SINGLE -> "S"
@@ -40,6 +43,9 @@ class CheckinAdapter(private val onClickListener: (View, Room)
                 RoomType.DELUXE -> String(Character.toChars(128081))
             }
 
+            if (room.id == myRoom) {
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorRed))
+            }
         }
     }
 

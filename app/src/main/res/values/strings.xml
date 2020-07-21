@@ -7,8 +7,54 @@
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
     <string name="book">Book</string>
-    <string name="info">Information</string>
+    <string name="map">Map</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="ok">OK</string>
+    <string name="simulate">Simulate human arrival</string>
+
+    <string name="pepper_disengage">See you soon!</string>
+    <string name="pepper_welcome">Hello, I am Pepper the Receptionist!</string>
+    <string name="pepper_entername"> Please enter
+    your name and surname on the tablet!</string>
+    <string name="pepper_info">We are Italy\'s finest fully
+    automated hotel. Given the current COVID pandemic, our hotel maximizes the safety of
+    the guests by minimizing human interactions.</string>
+    <string name="pepper_action_checkin">Well %1$s, it seems like you have an active booking for today.
+        You can checkin or ask me other information! </string>
+    <string name="pepper_action_checkout">%1$s, we hope that you are enjoying your stay at our hotel.
+        You can checkout or ask me other information! </string>
+    <string name="pepper_action_book">%1$s, it seems that you don\'t have a booking for today. You can
+        book right now. If we have free rooms we can accommodate you! Otherwise you can ask
+    me other questions.</string>
+    <string name="pepper_checkin_1">You have a booking for room %1$s, that is a %2$s room.</string>
+    <string name="pepper_checkin_2">To reach your room, take the corridor on the %1$s. Then your room
+    is the %2$s along the corridor on the %3$s. I will show you this map again when you like.
+    </string>
+    <string name="pepper_checkin_3">
+            Let me give you the key now!.
+    </string>
+
+    <string name="pepper_action_help1">
+            What else can I do for you %1$s?
+    </string>
+
+    <string name="pepper_action_help2">
+            Anything else %1$s?
+    </string>
+
+    <string name="pepper_action_help3">
+            Would you like to know something else %1$s?
+    </string>
+
+    <string name="pepper_checkin_fail">Sorry but you cannot checkin because you haven\'t booked for
+        today! Anything else I can do for you?
+    </string>
+    <string name="pepper_checkout_fail">Sorry but you cannot checkout since you have not
+        performed the checkin or you haven\'t booked already. Can I help you with something else?
+    </string>
+    <string name="pepper_book_fail">You cannot book right now since you are staying at the hotel
+        right now. Anything else I can do for you?
+    </string>
+
 </resources>

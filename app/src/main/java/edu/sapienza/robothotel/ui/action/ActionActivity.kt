@@ -10,13 +10,20 @@ import androidx.lifecycle.Observer
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
+import com.aldebaran.qi.sdk.`object`.conversation.*
+import com.aldebaran.qi.sdk.builder.ChatBuilder
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder
+import com.aldebaran.qi.sdk.builder.SayBuilder
+import com.aldebaran.qi.sdk.builder.TopicBuilder
 import com.aldebaran.qi.sdk.design.activity.RobotActivity
+import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy
 import edu.sapienza.robothotel.R
 import edu.sapienza.robothotel.RobotHotelApplication
+import edu.sapienza.robothotel.pepper.PepperState
 import edu.sapienza.robothotel.ui.checkin.CheckinActivity
-import edu.sapienza.robothotel.ui.info.InfoActivity
+import edu.sapienza.robothotel.ui.idle.IdleActivity
+import edu.sapienza.robothotel.ui.map.MapActivity
 import edu.sapienza.robothotel.viewmodel.ViewModelProviderFactory
-import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
@@ -28,8 +35,15 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
         providerFactory
     }
 
+    private var first: Boolean? = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        first = intent.extras?.getBoolean("first")
+
+
+        QiSDK.register(this, this)
+        setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.IMMERSIVE)
         setContentView(R.layout.activity_action)
         val userManager = (application as RobotHotelApplication).appComponent.userManager()
         userManager.userComponent!!.inject(this)
@@ -40,30 +54,49 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
         val imageCheckout = findViewById<ImageView>(R.id.image2)
         val imageBook = findViewById<ImageView>(R.id.image3)
 
-        viewModel.getBooking().observe(this, Observer{
-            if (it != null) {
-                if (it.checkinDate!!.isEqual(LocalDate.now()) && !it.checkedIn ) {
-                    cardBook.isClickable = false
-                    cardCheckout.isClickable = false
-                    imageBook.setImageResource(R.drawable.ic_book_gray)
-                    imageCheckout.setImageResource(R.drawable.ic_checkout_gray)
-                    // TODO: pepper must say that it has seen it has a booking so it must checkin.
-                } else if (it.checkedIn && !it.checkedOut) {
-                    cardBook.isClickable = false
-                    cardCheckin.isClickable = false
-                    imageBook.setImageResource(R.drawable.ic_book_gray)
-                    imageCheckin.setImageResource(R.drawable.ic_checkin_gray)
-                    // TODO: pepper recognize it as staying at the hotel, it can checkout.
-                }
-            } else {
-                cardCheckin.isClickable = false
-                cardCheckout.isClickable = false
-                imageCheckin.setImageResource(R.drawable.ic_checkin_gray)
-                imageCheckout.setImageResource(R.drawable.ic_checkout_gray)
-                // TODO: pepper recognize it user has not a booking so it has to book.
-            }
+        viewModel.bookingState.observe(this, Observer{
+           when(it) {
+               BookingState.CHECKIN -> {
+                   cardBook.isClickable = false
+                   cardCheckout.isClickable = false
+                   cardCheckin.isClickable = true
+                   imageBook.setImageResource(R.drawable.ic_book_gray)
+                   imageCheckout.setImageResource(R.drawable.ic_checkout_gray)
+                   imageCheckin.setImageResource(R.drawable.ic_checkin)
+               }
+               BookingState.CHECKOUT -> {
+                   cardBook.isClickable = false
+                   cardCheckin.isClickable = false
+                   cardCheckout.isClickable = true
+                   imageBook.setImageResource(R.drawable.ic_book_gray)
+                   imageCheckin.setImageResource(R.drawable.ic_checkin_gray)
+                   imageCheckout.setImageResource(R.drawable.ic_checkout)
+               }
+               BookingState.BOOK -> {
+                   cardCheckin.isClickable = false
+                   cardCheckout.isClickable = false
+                   cardBook.isClickable = true
+                   imageCheckin.setImageResource(R.drawable.ic_checkin_gray)
+                   imageCheckout.setImageResource(R.drawable.ic_checkout_gray)
+                   imageBook.setImageResource(R.drawable.ic_book)
+               }
+           }
         })
         viewModel.createDb()
+
+        viewModel.getPepperState().observe(this, Observer{
+            if (it == PepperState.IDLE) {
+                viewModel.deauthenticate()
+                idle()
+            }
+        })
+    }
+
+    private fun idle() {
+        // Now change activity
+        val intent = Intent(this, IdleActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onDestroy() {
@@ -71,25 +104,90 @@ class ActionActivity : RobotActivity(), RobotLifecycleCallbacks {
         QiSDK.unregister(this, this)
     }
 
-    override fun onRobotFocusGained(qiContext: QiContext) {}
-    override fun onRobotFocusLost() {}
+    override fun onRobotFocusGained(qiContext: QiContext) {
+        if (viewModel.bookingState.value == null) {
+            viewModel.bookingState.observe(this, Observer {
+                robotAct(it, qiContext)
+            })
+        }
+        else {
+            robotAct(viewModel.bookingState.value!!, qiContext)
+        }
+    }
+
+    private fun robotAct(bookingState: BookingState, qiContext: QiContext) {
+        // say initial phrase
+        sayActions(bookingState, qiContext)
+
+        // let the user talk with pepper
+        val topic: Topic = TopicBuilder.with(qiContext)
+            .withResource(R.raw.actions)
+            .build()
+
+        // Create a qiChatbot
+        val qiChatbot: QiChatbot = QiChatbotBuilder.with(qiContext).withTopic(topic).build()
+
+        val executors = HashMap<String, QiChatExecutor>()
+
+        // Map the executor name from the topic to our qiChatbotExecutor
+        executors["checkinExecutor"] = CheckinChatExecutor(qiContext, bookingState, this )
+        executors["checkoutExecutor"] = CheckoutChatExecutor(qiContext, bookingState, this)
+        executors["bookExecutor"] = BookChatExecutor(qiContext, bookingState, this)
+        executors["mapExecutor"] = MapChatExecutor(qiContext, this)
+
+        // Set the executors to the qiChatbot
+        qiChatbot.executors = executors
+
+        // Build chat with the chatbotBuilder
+        val chat: Chat = ChatBuilder.with(qiContext).withChatbot(qiChatbot).build()
+
+        // Run an action asynchronously.
+        chat.async().run()
+    }
+
+    private fun sayActions(state: BookingState, qiContext: QiContext) {
+        when (state) {
+            BookingState.CHECKIN ->
+                SayBuilder.with(qiContext).
+                withText(
+                    if (first == true) getString(R.string.pepper_action_checkin, viewModel.getUser()?.name)
+                    else getString(R.string.pepper_action_help1, viewModel.getUser()?.name)
+                ).build().run()
+            BookingState.CHECKOUT ->
+                SayBuilder.with(qiContext).withText(
+                    if (first == true) getString(R.string.pepper_action_checkout, viewModel.getUser()?.name)
+                    else getString(R.string.pepper_action_help2, viewModel.getUser()?.name)
+                ).build().run()
+            BookingState.BOOK ->
+                SayBuilder.with(qiContext).
+                withText(
+                    if (first == true) getString(R.string.pepper_action_book, viewModel.getUser()?.name)
+                    else getString(R.string.pepper_action_help3, viewModel.getUser()?.name)
+                ).build().run()
+        }
+    }
+
+    override fun onRobotFocusLost() {
+
+    }
+
     override fun onRobotFocusRefused(reason: String) {}
 
-    fun onCheckinClicked(view: View) {
+    fun onCheckinClicked(view: View?) {
         val intent = Intent(this, CheckinActivity::class.java)
         startActivity(intent)
     }
 
-    fun onCheckoutClicked(view: View) {
+    fun onCheckoutClicked(view: View?) {
         // TODO: need to be added
     }
 
-    fun onBookClicked(view: View) {
+    fun onBookClicked(view: View?) {
         // TODO: need to be added
     }
 
-    fun onInformationClicked(view: View) {
-        val intent = Intent(this, InfoActivity::class.java)
+    fun onMapClicked(view: View?) {
+        val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
     }
 }

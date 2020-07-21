@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.sapienza.robothotel.pepper.PepperManager
+import edu.sapienza.robothotel.pepper.PepperState
 import edu.sapienza.robothotel.user.UserManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class WelcomeViewModel @Inject constructor(private val userManager: UserManager) : ViewModel() {
+class WelcomeViewModel @Inject constructor(private val userManager: UserManager,
+                                           private val pepperManager: PepperManager) : ViewModel() {
 
     private val _authenticationState = MutableLiveData<Boolean>(false)
     val authenticationState: LiveData<Boolean>
@@ -19,6 +22,14 @@ class WelcomeViewModel @Inject constructor(private val userManager: UserManager)
             userManager.authenticateUser(name, surname)
             _authenticationState.value = true
         }
+    }
+
+    fun deauthenticate() {
+        userManager.deauthenticateUser()
+    }
+
+    fun getPepperState(): MutableLiveData<PepperState>{
+        return pepperManager.state
     }
 
 }

@@ -19,18 +19,25 @@ class UserManager @Inject constructor(private val userDao: UserDao,
 
     suspend fun authenticateUser(name: String, surname: String) {
         val user = userDao.getUser(name, surname)
-        if (user != null) {
-            authenticatedUser = user
-            // Log.i("robothotel", user.name)
+        authenticatedUser = if (user != null) {
+            user
         } else {
             registerUser(name, surname)
-            //Log.i("robothotel", "Registered new user!")
+            userDao.getUser(name, surname)
         }
         userComponent = userComponentFactory.create()
     }
 
-    private suspend fun registerUser(name: String, surname: String) {
+    fun deauthenticateUser() {
+        if (isUserAuthenticated()){
+            userComponent = null
+            authenticatedUser = null
+        }
+    }
+
+    private suspend fun registerUser(name: String, surname: String): User {
         val user = User(name=name, surname=surname)
         userDao.insertUsers(user)
+        return user
     }
 }

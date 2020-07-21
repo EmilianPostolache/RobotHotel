@@ -9,14 +9,26 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.room.Room
+import com.aldebaran.qi.Future
 import com.aldebaran.qi.sdk.QiContext
 import com.aldebaran.qi.sdk.QiSDK
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks
+import com.aldebaran.qi.sdk.`object`.conversation.Chat
+import com.aldebaran.qi.sdk.`object`.conversation.QiChatbot
+import com.aldebaran.qi.sdk.`object`.conversation.Topic
+import com.aldebaran.qi.sdk.builder.ChatBuilder
+import com.aldebaran.qi.sdk.builder.QiChatbotBuilder
+import com.aldebaran.qi.sdk.builder.SayBuilder
+import com.aldebaran.qi.sdk.builder.TopicBuilder
 import com.aldebaran.qi.sdk.design.activity.RobotActivity
+import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy
 import edu.sapienza.robothotel.R
 import edu.sapienza.robothotel.RobotHotelApplication
 import edu.sapienza.robothotel.db.AppDatabase
+import edu.sapienza.robothotel.pepper.PepperManager
+import edu.sapienza.robothotel.pepper.PepperState
 import edu.sapienza.robothotel.ui.action.ActionActivity
+import edu.sapienza.robothotel.ui.idle.IdleActivity
 import edu.sapienza.robothotel.viewmodel.ViewModelProviderFactory
 import javax.inject.Inject
 
@@ -24,6 +36,7 @@ class WelcomeActivity : RobotActivity(), RobotLifecycleCallbacks {
 
     private lateinit var nameText: EditText
     private lateinit var surnameText: EditText
+    private var chat: Chat? = null
 
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
@@ -37,6 +50,7 @@ class WelcomeActivity : RobotActivity(), RobotLifecycleCallbacks {
         component.inject(this)
 
         super.onCreate(savedInstanceState)
+        setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.IMMERSIVE)
         setContentView(R.layout.activity_welcome)
 
         nameText = findViewById(R.id.editTextTextPersonName)
@@ -45,7 +59,14 @@ class WelcomeActivity : RobotActivity(), RobotLifecycleCallbacks {
 
         viewModel.authenticationState.observe(this, Observer {
             if (it) {
-                changeActivity()
+                selectAction()
+            }
+        })
+
+        viewModel.getPepperState().observe(this, Observer{
+            if (it == PepperState.IDLE) {
+                viewModel.deauthenticate()
+                idle()
             }
         })
 
@@ -57,8 +78,19 @@ class WelcomeActivity : RobotActivity(), RobotLifecycleCallbacks {
         QiSDK.unregister(this, this)
     }
 
-    override fun onRobotFocusGained(qiContext: QiContext) {}
-    override fun onRobotFocusLost() {}
+    override fun onRobotFocusGained(qiContext: QiContext) {
+
+        val say1 = SayBuilder.with(qiContext).
+        withText(resources.getString(R.string.pepper_welcome)).build()
+        say1.run()
+        val say2 = SayBuilder.with(qiContext).
+        withText(resources.getString(R.string.pepper_entername)).build()
+        say2.run()
+    }
+
+    override fun onRobotFocusLost() {
+    }
+
     override fun onRobotFocusRefused(reason: String) {}
 
     fun authenticateUser(view: View) {
@@ -66,9 +98,17 @@ class WelcomeActivity : RobotActivity(), RobotLifecycleCallbacks {
         viewModel.authenticate(nameText.text.toString(), surnameText.text.toString())
     }
 
-    private fun changeActivity() {
+    private fun selectAction() {
         // Now change activity
         val intent = Intent(this, ActionActivity::class.java)
+        intent.putExtra("first", true)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun idle() {
+        // Now change activity
+        val intent = Intent(this, IdleActivity::class.java)
         startActivity(intent)
         finish()
     }

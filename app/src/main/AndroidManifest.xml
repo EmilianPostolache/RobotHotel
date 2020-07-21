@@ -13,22 +13,22 @@
         android:theme="@style/MyTheme"
         android:name=".RobotHotelApplication"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.info.InfoActivity"
-            android:label="@string/info"/>
+        <activity android:name=".ui.map.MapActivity"
+            android:label="@string/map"/>
         <activity android:name=".ui.checkin.CheckinActivity"
             android:label="@string/checkin"/>
-        <activity android:name=".ui.idle.IdleActivity"/>
-        <activity
-            android:name=".ui.action.ActionActivity"
-            android:label="@string/select_action" />
-        <activity
-            android:name=".ui.welcome.WelcomeActivity"
-            android:label="@string/welcome_short">
+        <activity android:name=".ui.idle.IdleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.action.ActionActivity"
+            android:label="@string/select_action" />
+        <activity
+            android:name=".ui.welcome.WelcomeActivity"
+            android:label="@string/welcome_short"/>
     </application>
 
 </manifest>

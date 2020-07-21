@@ -1,0 +1,20 @@
+topic: ~actions()
+# Defining extra concepts out of words or group of words
+concept:(hello) [hello hi hey "good morning" greetings]
+concept:(checkin) [checkin "check in"]
+concept:(checkout) [checkout "check out"]
+concept:(map) [map "hotel map"]
+concept:(book) [booking "to book"]
+concept:(covid) [covid coronavirus "social distancing"]
+concept:(info) [about "about you"]
+
+# Replying to speech
+u:(~hello) ~hello
+u:(~checkin) ^execute(checkinExecutor)
+u:(~checkout) ^execute(checkoutExecutor)
+u:(~map) ^execute(mapExecutor)
+u:(~book) ^execute(bookExecutor)
+u:(~covid) Given the current COVID pandemic, our hotel maximizes the safety of
+            the guests by minimizing human interactions. This because in this hotel
+            there are no human employes, only robots!
+u:(~info) We are Italy's finest fully automated hotel.

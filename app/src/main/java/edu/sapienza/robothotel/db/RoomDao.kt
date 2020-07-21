@@ -3,7 +3,6 @@ package edu.sapienza.robothotel.db
 import androidx.paging.DataSource
 import androidx.room.*
 import edu.sapienza.robothotel.vo.Room
-import edu.sapienza.robothotel.vo.User
 
 @Dao
 interface RoomDao {
@@ -15,5 +14,7 @@ interface RoomDao {
     @Query("SELECT * FROM room ORDER BY id DESC")
     fun findRooms(): DataSource.Factory<Int, Room>
 
+    @Query("SELECT * FROM room ORDER BY id DESC LIMIT 1")
+    suspend fun findRoom(): Room?
 }
 

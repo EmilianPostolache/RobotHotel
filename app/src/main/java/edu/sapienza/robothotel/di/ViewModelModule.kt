@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import edu.sapienza.robothotel.ui.action.ActionViewModel
 import edu.sapienza.robothotel.ui.checkin.CheckinViewModel
-import edu.sapienza.robothotel.ui.info.InfoViewModel
+import edu.sapienza.robothotel.ui.map.MapViewModel
 import edu.sapienza.robothotel.ui.welcome.WelcomeViewModel
 import edu.sapienza.robothotel.viewmodel.ViewModelProviderFactory
 
@@ -23,8 +23,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(InfoViewModel::class)
-    abstract fun bindInfoViewModel(viewModel: InfoViewModel): ViewModel
+    @ViewModelKey(MapViewModel::class)
+    abstract fun bindInfoViewModel(viewModel: MapViewModel): ViewModel
 
     @Binds
     @IntoMap

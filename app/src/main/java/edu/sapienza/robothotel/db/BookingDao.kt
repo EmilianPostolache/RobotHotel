@@ -3,6 +3,7 @@ package edu.sapienza.robothotel.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import edu.sapienza.robothotel.vo.Booking
+import edu.sapienza.robothotel.vo.BookingWithRoom
 import org.threeten.bp.LocalDate
 import java.util.*
 
@@ -20,8 +21,11 @@ interface BookingDao {
     // ------------------ Query -------------------
     @Query("SELECT * FROM booking WHERE userId = :userId AND (checkinDate = :date OR" +
             "(checkedIn = 1 AND checkedOut = 0))")
-    fun findBookingForDateOrActive(userId: Long, date: LocalDate?): LiveData<Booking>
+    fun findBookingForDateOrActive(userId: Long, date: LocalDate?): LiveData<List<Booking>>
 
     @Query("SELECT * FROM booking WHERE userId = :userId AND checkinDate = :date")
-    fun findBookingForDate(userId: Long, date: LocalDate?): LiveData<Booking>
+    fun findBookingForDate(userId: Long, date: LocalDate?): LiveData<List<Booking>>
+
+    @Query("SELECT * FROM booking WHERE userId = :userId AND checkinDate = :date")
+    fun findBookingWithRoomForDate(userId: Long, date: LocalDate?) :  LiveData<List<BookingWithRoom>>
 }
