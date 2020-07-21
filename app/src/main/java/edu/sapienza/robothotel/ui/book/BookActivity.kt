@@ -175,7 +175,7 @@ class BookActivity : RobotActivity(), RobotLifecycleCallbacks {
             .build() // Build the PhraseSet.
 
         val prhaseSetOk: PhraseSet = PhraseSetBuilder.with(qiContext)
-            .withTexts("proceede", "approve", "ok", "accept", "confirm")
+            .withTexts("proceed", "approve", "ok", "accept", "confirm")
             .build() // Build the PhraseSet.
 
         val prhaseSetNo: PhraseSet = PhraseSetBuilder.with(qiContext)
